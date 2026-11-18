@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>البحث في الكتب والمذكرات — مكتب العميد</title>
+<style>
+:root{
+  --bg:#F3F5FA;--surface:#fff;--surface-2:#F8FAFC;--ink:#0F172A;--ink-2:#334155;--muted:#64748B;--line:#E2E8F0;--line-2:#CBD5E1;
+  --accent:#4F46E5;--accent-dark:#3730A3;--accent-soft:#EEF2FF;--accent-line:#C7D2FE;
+  --book:#047857;--book-soft:#ECFDF5;--book-line:#A7F3D0;--memo:#1D4ED8;--memo-soft:#EFF6FF;--memo-line:#BFDBFE;
+  --danger:#B91C1C;--danger-soft:#FEF2F2;--danger-line:#FECACA;
+  --r-xl:20px;--r:12px;--r-sm:8px;
+  --sh:0 1px 2px rgba(15,23,42,.04),0 10px 30px -12px rgba(15,23,42,.14);
+  --font:"IBM Plex Sans Arabic","Segoe UI",Tahoma,"Noto Sans Arabic","Geeza Pro",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;min-height:100vh;font-family:var(--font);color:var(--ink);line-height:1.7;background:radial-gradient(50rem 26rem at 85% -10%,rgba(79,70,229,.12),transparent 60%),var(--bg);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid rgba(79,70,229,.45);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:1rem}
+
+/* الترويسة */
+.head{position:relative;overflow:hidden;color:#fff;border-radius:var(--r-xl);padding:1.4rem 1.5rem;background:linear-gradient(130deg,#0B1224 0%,var(--accent-dark) 60%,var(--accent) 100%);box-shadow:0 22px 44px -24px rgba(79,70,229,.7)}
+.head h1{margin:0;font-size:clamp(1.3rem,3.6vw,1.9rem);line-height:1.35}
+.head p{margin:.35rem 0 0;color:rgba(255,255,255,.82);font-size:.9rem}
+.head .row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:46px;padding:.5rem 1.2rem;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r);cursor:pointer}
+
+/* الفلاتر */
+.panel{margin-top:1rem;padding:1.1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--sh)}
+.q{position:relative}
+.q input{width:100%;min-height:52px;padding:.6rem 2.8rem .6rem .9rem;font-size:1.05rem;border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface)}
+.q svg{position:absolute;top:50%;right:.9rem;width:1.3rem;height:1.3rem;transform:translateY(-50%);stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round}
+.filters{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:.8rem}
+.filters label{display:grid;gap:.2rem;font-size:.82rem;color:var(--muted)}
+.filters select,.filters input{min-height:44px;padding:.35rem .6rem;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm)}
+.meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;margin:1rem .2rem .6rem;color:var(--muted);font-size:.9rem}
+.meta b{color:var(--ink)}
+.linkbtn{padding:0;color:var(--accent-dark);background:none;border:0;cursor:pointer;text-decoration:underline}
+
+/* النتائج */
+.list{display:grid;gap:.7rem}
+.card{padding:.95rem 1.1rem;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--memo);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.card.book{border-inline-start-color:var(--book)}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .9rem;margin-bottom:.35rem;font-size:.86rem;color:var(--muted)}
+.badge{padding:.08rem .65rem;font-size:.8rem;border-radius:999px;border:1px solid var(--memo-line);color:var(--memo);background:var(--memo-soft)}
+.card.book .badge{border-color:var(--book-line);color:var(--book);background:var(--book-soft)}
+.top span b{color:var(--ink-2);font-weight:600}
+.subj{margin:0 0 .3rem;font-size:1.05rem;color:var(--ink)}
+.party{margin:0 0 .4rem;font-size:.92rem;color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{padding:.1rem .6rem;font-size:.8rem;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:999px}
+mark{padding:0 .1em;background:#FEF08A;border-radius:3px;color:inherit}
+.empty{padding:2rem 1rem;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-xl)}
+.more{display:flex;justify-content:center;margin-top:1rem}
+.more .btn{width:auto}
+.foot{margin:2rem 0 1rem;text-align:center;color:var(--muted);font-size:.8rem;direction:ltr;letter-spacing:.06em}
+
+@media (max-width:760px){
+  .filters{grid-template-columns:1fr 1fr}
+  .wrap{padding:.7rem}
+  .head{padding:1.1rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="row">
+      <div>
+        <h1>البحث في الكتب والمذكرات</h1>
+        <p>مكتب العميد — كلية علوم الحاسوب والرياضيات</p>
+      </div>
+    </div>
+  </header>
+
+  <p class="empty" id="status" style="margin-top:1rem">جارٍ تحميل البيانات…</p>
+
+  <main id="app" hidden>
+    <section class="panel" aria-label="البحث">
+      <div class="q">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="q" placeholder="ابحث برقم الكتاب، الموضوع، صاحب العلاقة، أو الجهة…" aria-label="بحث">
+      </div>
+      <div class="filters">
+        <label>النوع
+          <select id="fType"><option value="">الكل</option><option value="كتاب">كتاب</option><option value="مذكرة">مذكرة</option></select>
+        </label>
+        <label>البحث بتاريخ
+          <select id="fField"><option value="docDate">تاريخ المستند</option><option value="annDate">تاريخ التهميش</option></select>
+        </label>
+        <label>من تاريخ<input type="date" id="fFrom"></label>
+        <label>إلى تاريخ<input type="date" id="fTo"></label>
+      </div>
+    </section>
+    <div class="meta" role="status" aria-live="polite">
+      <span id="count"></span>
+      <span><span id="updated"></span> · <button type="button" class="linkbtn" id="btnReset">مسح البحث</button></span>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="more" id="moreWrap" hidden><button type="button" class="btn" id="btnMore">عرض المزيد</button></div>
+  </main>
+
+  <p class="foot">Designed by OMAR INAAM</p>
+</div>
+
+<script>
+(function () {
+"use strict";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const PAGE = 50;
+let records = [], shown = PAGE;
+
+/* توحيد الحروف العربية في البحث (أ/إ/آ ← ا، ة ← ه، ى ← ي، حذف التشكيل) */
+function norm(s) {
+  return String(s || "").toLowerCase()
+    .replace(/[\u064B-\u0652\u0640]/g, "")
+    .replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي")
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x660));
+}
+function fmt(iso) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ""); return m ? m[3] + "/" + m[2] + "/" + m[1] : ""; }
+
+async function load() {
+  try {
+    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) throw new Error("لم تُنشر أي بيانات بعد. افتح البرنامج في مكتب العميد واضغط «إنهاء العمل» لنشرها.");
+    if (!r.ok) throw new Error("تعذّر تحميل البيانات (" + r.status + "). أعد تحميل الصفحة.");
+    const p = await r.json();
+    if (!Array.isArray(p.records)) throw new Error("البيانات المنشورة بالصيغة القديمة. افتح البرنامج واضغط «موقع البحث» ثم «حفظ ونشر الآن».");
+    records = p.records.map((r) => Object.assign(r, {
+      _t: norm([r.type, r.number, fmt(r.docDate), fmt(r.annDate), r.subject, r.party, (r.dests || []).join(" ")].join(" "))
+    })).sort((a, b) => (b.annDate || b.docDate || "").localeCompare(a.annDate || a.docDate || "") || b.id - a.id);
+    $("updated").textContent = p.updated ? "آخر تحديث: " + new Date(p.updated).toLocaleString("ar-IQ", { dateStyle: "medium", timeStyle: "short" }) : "";
+    $("status").hidden = true; $("app").hidden = false;
+    render();
+    $("q").focus();
+  } catch (e) {
+    $("status").textContent = e.message;
+  }
+}
+
+function hl(text, words) {
+  let out = esc(text || "");
+  if (!words.length || !text) return out;
+  /* تمييز الكلمات المطابقة (مطابقة تقريبية على النص الأصلي) */
+  const n = norm(text);
+  const marks = [];
+  words.forEach((w) => { let i = n.indexOf(w); while (i >= 0) { marks.push([i, i + w.length]); i = n.indexOf(w, i + w.length); } });
+  if (!marks.length || n.length !== String(text).toLowerCase().length) return out;
+  marks.sort((a, b) => a[0] - b[0]);
+  let res = "", pos = 0;
+  for (const [s, e] of marks) { if (s < pos) continue; res += esc(text.slice(pos, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>"; pos = e; }
+  return res + esc(text.slice(pos));
+}
+
+function filtered() {
+  const words = norm($("q").value.trim()).split(/\s+/).filter(Boolean);
+  const type = $("fType").value, field = $("fField").value, from = $("fFrom").value, to = $("fTo").value;
+  return { words, rows: records.filter((r) => {
+    if (type && r.type !== type) return false;
+    const d = r[field] || "";
+    if (from && (!d || d < from)) return false;
+    if (to && (!d || d > to)) return false;
+    return words.every((w) => r._t.includes(w));
+  }) };
+}
+function render() {
+  const { words, rows } = filtered();
+  const part = rows.slice(0, shown);
+  $("count").innerHTML = rows.length === records.length
+    ? "إجمالي السجلات: <b>" + records.length + "</b>"
+    : "النتائج: <b>" + rows.length + "</b> من " + records.length;
+  $("list").innerHTML = part.length ? part.map((r) => {
+    const book = r.type === "كتاب";
+    const bits = [];
+    if (r.number) bits.push("<span>الرقم: <b>" + hl(r.number, words) + "</b></span>");
+    if (r.docDate) bits.push("<span>تاريخه: <b>" + fmt(r.docDate) + "</b></span>");
+    if (r.annDate) bits.push("<span>التهميش: <b>" + fmt(r.annDate) + "</b></span>");
+    return '<article class="card' + (book ? " book" : "") + '">' +
+      '<div class="top"><span class="badge">' + esc(r.type) + "</span>" + bits.join("") + "</div>" +
+      (r.subject ? '<p class="subj">' + hl(r.subject, words) + "</p>" : "") +
+      (r.party ? '<p class="party">صاحب العلاقة: ' + hl(r.party, words) + "</p>" : "") +
+      ((r.dests || []).length ? '<div class="tags">' + r.dests.map((d) => '<span class="tag">' + hl(d, words) + "</span>").join("") + "</div>" : "") +
+    "</article>";
+  }).join("") : '<div class="empty">' + (records.length ? "لا توجد نتائج مطابقة." : "لا توجد سجلات بعد.") + "</div>";
+  $("moreWrap").hidden = rows.length <= shown;
+}
+const rerender = () => { shown = PAGE; render(); };
+
+$("q").addEventListener("input", rerender);
+["fType", "fField", "fFrom", "fTo"].forEach((id) => $(id).addEventListener("change", rerender));
+$("btnMore").addEventListener("click", () => { shown += PAGE; render(); });
+$("btnReset").addEventListener("click", () => { $("q").value = ""; $("fType").value = ""; $("fField").value = "docDate"; $("fFrom").value = ""; $("fTo").value = ""; rerender(); $("q").focus(); });
+load();
+})();
+</script>
+</body>
+</html>
